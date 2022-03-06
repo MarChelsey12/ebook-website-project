@@ -18,6 +18,10 @@ import {CancelToken} from 'apisauce';
 // import {deleteUser} from './api/apiUser';
 import {getBooks} from './api/apiBook';
 
+// Formik forms 
+// import LoginForm from './forms/LoginForm';
+import RegisterEditForm from './forms/RegisterEditForm';
+
 
 /// lWv4FFLjByZQ8oicD-Gpid3GaHC0oFtiCXv6TOT9v18
 const handleClick = async () => {
@@ -42,6 +46,8 @@ function App() {
       <Chip/>
       <hr/>
       <Button onClick={handleClick}>Do API Call</Button>
+      <hr/>
+      <RegisterEditForm/>
       <Card/>
 
     
