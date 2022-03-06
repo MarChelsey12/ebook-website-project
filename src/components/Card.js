@@ -5,7 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { CardActionArea, CardActions } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
