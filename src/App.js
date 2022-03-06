@@ -9,6 +9,9 @@ import Card from './components/Card';
 import Chip from './components/Chip';
 import NavBar from './components/NavBar';
 import Button from './components/Button';
+import Dialogs from './components/Dialogs';
+import ImageList from './components/ImageList';
+import Rating from './components/HeartRating';
 
 // API imports
 import {CancelToken} from 'apisauce';
@@ -45,10 +48,12 @@ function App() {
     <NavBar/>  
       <Chip/>
       <hr/>
+      <Rating/>
       <Button onClick={handleClick}>Do API Call</Button>
       <hr/>
-      <RegisterEditForm/>
-      <Card/>
+      <ImageList/>
+      <hr/>
+      <Dialogs/>
 
     
 
