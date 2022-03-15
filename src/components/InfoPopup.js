@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useContext, useEffect, useRef} from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -9,6 +9,7 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import DialogContentText from '@mui/material/DialogContentText';
+import {AppContext} from '../context/AppContext';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -48,7 +49,8 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialogs() {
+export default function CustomizedDialogs(props) {
+  const {book, getBooks} = useContext(AppContext);
   const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState('paper');
 
@@ -56,55 +58,46 @@ export default function CustomizedDialogs() {
     setOpen(true);
     setScroll(scrollType);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
 
-  const descriptionElementRef = React.useRef(null);
-  React.useEffect(() => {
+  const getBookInfoRef = useRef(null);
+  useEffect(() => {
     if (open) {
-      const { current: descriptionElement } = descriptionElementRef;
-      if (descriptionElement !== null) {
-        descriptionElement.focus();
+      const { current: getBookInfo } = getBookInfoRef;
+      if (getBookInfo !== null) {
+        getBookInfo.focus();
       }
     }
   }, [open]);
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen('paper')}>
-        Open dialog
-      </Button>
-      <BootstrapDialog
+      <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        aria-describedby="scroll-dialog-description"
+        aria-labelledby="Title"
+        aria-describedby="Book Title"
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Modal title
+          {book.title}
         </BootstrapDialogTitle>
         <DialogContent  dividers={scroll === 'paper'}>
           <DialogContentText
-            id="scroll-dialog-description"
-            ref={descriptionElementRef}
+            id="Book Description"
+            ref={getBookInfoRef}
             tabIndex={-1}
           >
-            {[...new Array(50)]
-              .map(
-                () => `Cras mattis consectetur purus sit amet fermentum.
-Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
-              )
-              .join('\n')}
+            {book.desc}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
+        <Button onClick={handleClose}>Subscribe</Button>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
         </DialogActions>
-      </BootstrapDialog>
+      </Dialog>
     </div>
   );
 }

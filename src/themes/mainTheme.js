@@ -1,10 +1,10 @@
 import { createTheme } from '@mui/material/styles';
 
-
 const themeOptions = 
 {
     palette: {
       type: 'light',
+      mode: 'light',
       primary: {
         main: '#434762',
       },
