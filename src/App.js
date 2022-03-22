@@ -3,7 +3,6 @@ import {Routes, Route} from 'react-router-dom';
 import Box from '@mui/material/Box';
 
 // Components imports
-import BookCards from './components/BookCards';
 import NavBar from './components/NavBar';
 
 // Views imports
@@ -32,7 +31,6 @@ function App() {
 
         </Routes> 
       </Box>
-        <BookCards/>
     </>
   );
 }
