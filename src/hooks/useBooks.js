@@ -13,11 +13,9 @@ export default function useBooks() {
                 const response = await getBooks(source.token);
                 setBooks(response);
             
-        })()
-        return ()=>{source.cancel()}
-    },[]
-
+            })()
+            return ()=>{source.cancel()}
+        },[]
     )
-
-  return books
-}
+    return books;
+};

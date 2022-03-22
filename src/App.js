@@ -1,43 +1,38 @@
 import './App.css';
+import {Routes, Route} from 'react-router-dom';
+import Box from '@mui/material/Box';
 
 // Components imports
 import BookCards from './components/BookCards';
 import NavBar from './components/NavBar';
-import Button from './components/Button';
-import InfoPopup from './components/InfoPopup';
-import Rating from './components/HeartRating';
-
-// API imports
-import {CancelToken} from 'apisauce';
-// import {getLogin} from './api/apiBasicAuth';
-// import {postUser} from './api/apiUser';
-// import {putUser} from './api/apiUser';
-// import {deleteUser} from './api/apiUser';
-import {getBooks} from './api/apiBook';
-
-// Formik forms 
-// import LoginForm from './forms/LoginForm';
-// import RegisterEditForm from './forms/RegisterEditForm';
-
 
 // Views imports
 import BookBrowser from './views/BookBrowser';
-
-const handleClick = async () => {
-  const source = CancelToken.source();
-  const response_object = await getBooks(source.token);
-console.log(response_object)
-}
+import ReadingList from './views/ReadingList';
+import Login from './views/Login';
+import Logout from './views/Logout';
+import Home from './views/Home';
+import RegisterUser from './views/RegisterUser';
+import EditUser from './views/EditUser';
 
 
 function App() {
   return (
     <>
-      <NavBar/>  
-      <hr/>
-      <BookCards/>
-      <Button onClick={handleClick}>Do API Call</Button>
-      <hr/>
+      <NavBar/>
+      <Box sx={{minHeight:'90vh'}}>
+        <Routes>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/logout" element={<Logout/>}/>
+          <Route path="/edit_user" element={<EditUser/>}/>
+          <Route path="/register" element={<RegisterUser/>}/>
+          <Route path="/books" element={<BookBrowser/>}/>
+          <Route path="/reading_list" element={<ReadingList/>}/>
+
+        </Routes> 
+      </Box>
+        <BookCards/>
     </>
   );
 }

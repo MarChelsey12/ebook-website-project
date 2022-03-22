@@ -9,28 +9,28 @@ const AppContextProvider = ({children})=>{
         let user = localStorage.getItem('user');
         if(user){
             return JSON.parse(user)
-        }
-    }
+        };
+    };
 
     const [user, _setUser]=useState(getUserFromLS());
     const [alert, setAlert]=useState({});
 
     const getBooksFromLS = ()=>{
-        let getBooks = localStorage.getItem('books');
-        if (getBooks){
-            return JSON.parse(getBooks)
+        let bookList = localStorage.getItem('books');
+        if (bookList){
+            return JSON.parse(bookList)
         };
         return []
     };
 
-    const [books, setBooks] = useState({});
-    const [getBooks, dispatch] = useReducer(bookReducer, getBooksFromLS())
+    const [book, setBook] = useState({});
+    const [bookList, dispatch] = useReducer(bookReducer, getBooksFromLS())
 
     useEffect(
         ()=>{
-            localStorage.setItem('getBooks', JSON.stringify(getBooks))
+            localStorage.setItem('bookList', JSON.stringify(bookList))
         },
-        [getBooks]
+        [bookList]
     )
 
     const values = {
@@ -41,9 +41,9 @@ const AppContextProvider = ({children})=>{
         },
         alert,
         setAlert,
-        books,
-        setBooks,
-        getBooks,
+        book,
+        setBook,
+        bookList,
         addToReadingList:(book)=>{
             dispatch({type: bookActions.addToReadingList, book})
         },
@@ -62,5 +62,4 @@ const AppContextProvider = ({children})=>{
     )
 
 }
-export default AppContextProvider
-
+export default AppContextProvider;

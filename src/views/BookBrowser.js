@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import BookCards from '../components/BookCards';
-import Popup from '../components/Popup';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 
 export default function BookBrowser() {
@@ -9,8 +10,10 @@ export default function BookBrowser() {
 
   return (
     <>
-        {/* <Popup handelClick={(book)=>{getBooks(book)}} /> */}
+      <Typography variant='h3'>Browse Available Titles</Typography>
+      <Box sx={{display:"flex", alignContent:"center", justifyContent:"center", width:"100%", mb:2}}>
         <BookCards/>
+      </Box>
     </>
   )
 }

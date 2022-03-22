@@ -109,8 +109,6 @@ export default function RegisterForm({user}) {
             helperText={formik.touched.password && formik.errors.password}
         />
         <Button type="submit" sx={{width:"100%", my:1}}>{user?'Edit User':'Create User'}</Button>
-        <Button color="error" onClick={()=>handleDelete()} sx={{width:"100%", my:1}}>Delete User</Button>
-
     </form>
   )
 }

@@ -13,8 +13,10 @@ import useBooks from '../hooks/useBooks';
 import Error from './Error';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import ImageListItem, { imageListItemClasses } from '@mui/material/ImageListItem';
 import InfoIcon from '@mui/icons-material/Info';
-import CloseIcon from '@mui/icons-material/Close';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -28,65 +30,86 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function BookCard() {
+  const {bookList, addToReadingList, markAsRead} = useContext(AppContext);
   const {error, books} = useBooks();
-  const {addToReadingList, markAsRead} = useContext(AppContext);
   const [expanded, setExpanded] = useState(false);
 
-  const handleAddToReadingList =(books)=>{
-    addToReadingList(books)
+  const handleAddToReadingList =(book)=>{
+    addToReadingList(book)
   };
-  const handleMarkAsRead =(books)=>{
-    markAsRead(books)
+  const handleMarkAsRead =(book)=>{
+    markAsRead(book)
   };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  if (error){return (
+    <Box sx={{display:'flex'}}>
+      <Error>{error}</Error>
+    </Box>)
+}
+
+  if (!books){
+      return(
+      <Box sx={{display:'flex'}}>
+          <CircularProgress />
+      </Box>)
+  }
+
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardHeader
-        title="Title"
-        subheader="Auth"
-      />
-      <CardMedia
-        component="img"
-        height="194"
-        image="/static/images/cards/paella.jpg"
-        alt="Paella dish"
-      />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          This impressive
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton 
-                aria-label="add to reading list"
-                onClick={()=>{handleAddToReadingList(books)}}>
-          <PlaylistAddIcon />
-        </IconButton>
-        <IconButton 
-                aria-label="remove from reading list"
-                onClick={()=>{handleMarkAsRead(books)}}>
-          <PlaylistRemoveIcon />
-        </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <InfoIcon />
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+    <Box sx={{display:"grid", 
+    gridTemplateColumns:{xs:'repeat(1,1fr)', sm:'repeat(2,1fr)', md:'repeat(3,1fr)', lg:'repeat(4,1fr)'},
+    [`& .${imageListItemClasses}`]:{display:"flex", flexDirection:"column"}}}>
+      {books.map((book)=>(
+        <Card sx={{ maxWidth: 345, mb:4, mx:15}} key={book.id}>
+        <CardMedia
+          component="img"
+          height="250"
+          image={book.img}
+          alt="Novel Cover"
+        />
         <CardContent>
-          <Typography paragraph>
-            Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
-            </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {book.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {book.author}
+          </Typography>
+        <CardActions disableSpacing>
+          <IconButton 
+                  aria-label="add to reading list"
+                  onClick={()=>{handleAddToReadingList(book)}}>
+            <PlaylistAddIcon />
+          </IconButton>
+          <IconButton 
+                  aria-label="remove from reading list"
+                  onClick={()=>{handleMarkAsRead(book)}}>
+            <PlaylistRemoveIcon />
+          </IconButton>
+          <ExpandMore
+            expand={expanded}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+            >
+            <InfoIcon />
+          </ExpandMore>
+        </CardActions>
         </CardContent>
-      </Collapse>
-    </Card>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography paragraph>
+            {book.pages} :Pages
+              </Typography>
+              <Typography paragraph>
+              {book.summary}.
+              </Typography>
+          </CardContent>
+        </Collapse>
+      </Card>
+      ))}
+    </Box>
   );
 }

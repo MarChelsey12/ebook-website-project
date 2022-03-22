@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useContext} from 'react'
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -6,42 +6,16 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
+
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
-import MoreIcon from '@mui/icons-material/MoreVert';
+import ThemeSwitch from './ThemeSwitch';
+import {Link} from 'react-router-dom';
+import {AppContext} from '../context/AppContext'
 
-
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  }));
-  
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }));
   
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
@@ -58,8 +32,9 @@ const Search = styled('div')(({ theme }) => ({
   }));
 
   export default function NavBar() {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+    const {user, book} = useContext(AppContext);
   
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -98,8 +73,26 @@ const Search = styled('div')(({ theme }) => ({
         open={isMenuOpen}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+         {user?.token ?
+         <>
+        <MenuItem onClick={handleMenuClose}>
+          <Link to='/logout' style={{textDecoration:"none"}}>
+            Logout
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleMenuClose}>
+          <Link to='/edit_user' style={{textDecoration:"none"}}>
+            My account
+          </Link>
+        </MenuItem>
+        </>
+        :
+          <MenuItem onClick={handleMenuClose}>
+            <Link to='/login' style={{textDecoration:"none"}}>
+              Login
+            </Link>
+          </MenuItem>
+        }
       </Menu>
     );
   
@@ -121,12 +114,10 @@ const Search = styled('div')(({ theme }) => ({
         onClose={handleMobileMenuClose}
       >
         <MenuItem>
-          <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-            <Badge badgeContent={4} color="error">
+          <IconButton size="large" color="inherit">
               <BookmarkIcon />
-            </Badge>
           </IconButton>
-          <p>bookmarks</p>
+          <p>Reading List</p>
         </MenuItem>
         <MenuItem>
           <IconButton
@@ -134,11 +125,11 @@ const Search = styled('div')(({ theme }) => ({
             aria-label="show 17 new notifications"
             color="inherit"
           >
-            <Badge badgeContent={17} color="error">
+            <Link to='/books'>
               <WhatshotIcon />
-            </Badge>
+            </Link>
           </IconButton>
-          <p>Trending</p>
+          <p>New Titles</p>
         </MenuItem>
         <MenuItem onClick={handleProfileMenuOpen}>
           <IconButton
@@ -159,15 +150,7 @@ const Search = styled('div')(({ theme }) => ({
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
+  
             <Typography
               variant="h6"
               noWrap
@@ -176,30 +159,24 @@ const Search = styled('div')(({ theme }) => ({
             >
               Bundle of Books
             </Typography>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </Search>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+              <IconButton aria-label="theme mode" color="inherit">
+                <ThemeSwitch/>
+              </IconButton>
               <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="error">
+                <Link to='/reading_list'>
                   <BookmarkIcon />
-                </Badge>
+                </Link>
               </IconButton>
               <IconButton
                 size="large"
                 aria-label="show 17 new notifications"
                 color="inherit"
               >
-                <Badge badgeContent={17} color="error">
+                 <Link to='/books'>
                   <WhatshotIcon />
-                </Badge>
+                </Link>
               </IconButton>
               <IconButton
                 size="large"
@@ -214,16 +191,6 @@ const Search = styled('div')(({ theme }) => ({
               </IconButton>
             </Box>
             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size="large"
-                aria-label="show more"
-                aria-controls={mobileMenuId}
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                color="inherit"
-              >
-                <MoreIcon />
-              </IconButton>
             </Box>
           </Toolbar>
         </AppBar>

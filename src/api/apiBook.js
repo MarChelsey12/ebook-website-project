@@ -29,9 +29,8 @@ export const getBookByID = async(id, cancelToken)=>{
     }else{
         error = 'An Unexpected Error Has Occured. Please Try Again.'
     }
-
     return{
         error,
-        book,
-    }
-}
+        book
+    };
+};
